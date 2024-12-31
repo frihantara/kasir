@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kasir Modern</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+      }
+      header {
+        background-color: #4caf50;
+        color: white;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      header h1 {
+        margin: 0;
+      }
+      header a {
+        color: white;
+        text-decoration: none;
+        background-color: #333;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        color: #333;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f4f4f4;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      .form-group input,
+      .form-group datalist {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .btn {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background-color: #45a049;
+      }
+      .delete-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .delete-btn:hover {
+        background-color: darkred;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Aplikasi Kasir Modern</h1>
+      <a href="riwayat.html">Riwayat Transaksi</a>
+    </header>
+    <div class="container">
+      <h2>Pilih Barang</h2>
+      <div class="form-group">
+        <label for="itemSearch">Cari atau Pilih Barang</label>
+        <input
+          list="itemList"
+          id="itemSearch"
+          placeholder="Cari atau pilih barang..."
+        />
+        <datalist id="itemList">
+          <option value="Rokok (Gudang Garam)|20000">
+            Rokok (Gudang Garam) - Rp 20,000
+          </option>
+          <option value="Rokok (Djarum Super)|25000">
+            Rokok (Djarum Super) - Rp 25,000
+          </option>
+          <option value="Rokok (Marlboro)|30000">
+            Rokok (Marlboro) - Rp 30,000
+          </option>
+          <option value="Rokok (Sampoerna Mild)|27000">
+            Rokok (Sampoerna Mild) - Rp 27,000
+          </option>
+          <option value="Rokok (Camel)|35000">Rokok (Camel) - Rp 35,000</option>
+          <option value="Minuman (Aqua)|5000">Minuman (Aqua) - Rp 5,000</option>
+          <option value="Minuman (Coca-Cola)|10000">
+            Minuman (Coca-Cola) - Rp 10,000
+          </option>
+          <option value="Minuman (Sprite)|10000">
+            Minuman (Sprite) - Rp 10,000
+          </option>
+          <option value="Minuman (Teh Botol Sosro)|8000">
+            Minuman (Teh Botol Sosro) - Rp 8,000
+          </option>
+          <option value="Minuman (Pocari Sweat)|12000">
+            Minuman (Pocari Sweat) - Rp 12,000
+          </option>
+          <option value="Makanan (Indomie Goreng)|3000">
+            Makanan (Indomie Goreng) - Rp 3,000
+          </option>
+          <option value="Makanan (SilverQueen)|20000">
+            Makanan (SilverQueen) - Rp 20,000
+          </option>
+          <option value="Makanan (Chitato)|15000">
+            Makanan (Chitato) - Rp 15,000
+          </option>
+          <option value="Makanan (Beng-Beng)|2000">
+            Makanan (Beng-Beng) - Rp 2,000
+          </option>
+          <option value="Makanan (Oreo)|10000">
+            Makanan (Oreo) - Rp 10,000
+          </option>
+        </datalist>
+      </div>
+      <div class="form-group">
+        <label for="itemQuantity">Jumlah</label>
+        <input
+          type="number"
+          id="itemQuantity"
+          placeholder="Masukkan jumlah"
+          min="1"
+        />
+      </div>
+      <button class="btn" onclick="addItem()">Tambah ke Daftar</button>
+
+      <h2>Daftar Barang</h2>
+      <table id="itemTable">
+        <thead>
+          <tr>
+            <th>Nama Barang</th>
+            <th>Harga</th>
+            <th>Jumlah</th>
+            <th>Subtotal</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data barang akan ditambahkan di sini -->
+        </tbody>
+      </table>
+
+      <h2>Total</h2>
+      <p id="totalAmount">Rp 0</p>
+
+      <button class="btn" onclick="completeTransaction()">
+        Selesaikan Transaksi
+      </button>
+    </div>
+
+    <script>
+      let items = [];
+      let history =
+        JSON.parse(localStorage.getItem("transactionHistory")) || [];
+
+      function addItem() {
+        const selectedItem = document.getElementById("itemSearch").value;
+        const quantity = parseInt(
+          document.getElementById("itemQuantity").value
+        );
+
+        if (!selectedItem || isNaN(quantity) || quantity < 1) {
+          alert("Mohon pilih barang dan masukkan jumlah yang valid!");
+          return;
+        }
+
+        const [name, price] = selectedItem.split("|");
+        const subtotal = parseInt(price) * quantity;
+        items.push({ name, price: parseInt(price), quantity, subtotal });
+        updateTable();
+      }
+
+      function removeItem(index) {
+        items.splice(index, 1);
+        updateTable();
+      }
+
+      function updateTable() {
+        const tableBody = document
+          .getElementById("itemTable")
+          .querySelector("tbody");
+        tableBody.innerHTML = "";
+
+        let total = 0;
+        items.forEach((item, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>Rp ${item.price.toLocaleString()}</td>
+                    <td>${item.quantity}</td>
+                    <td>Rp ${item.subtotal.toLocaleString()}</td>
+                    <td><button class="delete-btn" onclick="removeItem(${index})">&times;</button></td>
+                `;
+          tableBody.appendChild(row);
+
+          total += item.subtotal;
+        });
+
+        document.getElementById(
+          "totalAmount"
+        ).textContent = `Rp ${total.toLocaleString()}`;
+      }
+
+      function completeTransaction() {
+        if (items.length === 0) {
+          alert("Tidak ada barang untuk diselesaikan!");
+          return;
+        }
+
+        const total = items.reduce((sum, item) => sum + item.subtotal, 0);
+        const today = new Date().toISOString().split("T")[0];
+        const transactionDetails = items
+          .map((item) => `${item.name} (${item.quantity})`)
+          .join(", ");
+
+        history.push({ date: today, details: transactionDetails, total });
+        localStorage.setItem("transactionHistory", JSON.stringify(history));
+
+        items = [];
+        updateTable();
+        alert("Transaksi berhasil diselesaikan!");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Transaksi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Riwayat Transaksi</h1>
+    </header>
+    <div class="container">
+        <h2>Riwayat Transaksi</h2>
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Nama Barang</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Riwayat transaksi akan ditambahkan di sini -->
+            </tbody>
+        </table>
+        <button class="btn" onclick="exportToExcel()">Export ke Excel</button>
+        <button class="btn" onclick="clearAllHistory()">Hapus Semua Riwayat</button>
+    </div>
+
+    <script>
+        let history = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+        function updateHistory() {
+            const tableBody = document.getElementById('historyTable').querySelector('tbody');
+            tableBody.innerHTML = '';
+
+            history.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.details}</td>
+                    <td>Rp ${record.total.toLocaleString()}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function exportToExcel() {
+            const today = new Date().toISOString().split('T')[0];
+            const csvRows = [
+                ['Tanggal', 'Nama Barang', 'Total'],
+                ...history.map(record => [record.date, record.details, `Rp ${record.total.toLocaleString()}`])
+            ];
+
+            const csvContent = csvRows.map(row => row.join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `riwayat_transaksi_${today}.csv`);
+            a.click();
+        }
+
+        function clearAllHistory() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua riwayat transaksi?')) {
+                history = [];
+                localStorage.setItem('transactionHistory', JSON.stringify(history));
+                updateHistory();
+                alert('Semua riwayat transaksi telah dihapus!');
+            }
+        }
+
+        window.onload = function () {
+            updateHistory();
+        };
+    </script>
+</body>
+</html>
